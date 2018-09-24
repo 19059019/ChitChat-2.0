@@ -101,9 +101,8 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                     if (message.startsWith("EXIT")) {
                         break;
                     } else {
-                        output.println(message);
+                        output.println("@everyone "+message);
                     }
-                    output.println(message);
                 }
 
                 System.out.println("Cheerio!");
@@ -327,7 +326,7 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         if (!tfMessageInput.getText().equals("") && !tfMessageInput.getText().equals("Type message or command here...")) {
             String msg = tfMessageInput.getText();
 
-            output.println(msg);
+            output.println("@everyone " + msg);
 
             if (msg.startsWith("EXIT")) {
                 tfMessageInput.setText("Cheerio!");
@@ -348,16 +347,16 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
     }
 
     private void btnCallActionPerformed(java.awt.event.ActionEvent evt) {
-//        String target = lstOnlineUsers.getSelectedValue();
-//
-//        if (!tfMessageInput.getText().equals("") && !tfMessageInput.getText().equals("Type message here...")) {
-//            String msg = tfMessageInput.getText();
-//
-//            output.println("@" + target + " " + msg);
-//
-//            tfMessageInput.setText("Type message here...");
-//            btnGroup.setEnabled(true);
-//        }
+    //    String target = lstOnlineUsers.getSelectedValue();
+
+    //    if (!tfMessageInput.getText().equals("") && !tfMessageInput.getText().equals("Type message here...")) {
+    //        String msg = tfMessageInput.getText();
+
+    //        output.println("@" + target + " " + msg);
+
+    //        tfMessageInput.setText("Type message here...");
+    //        btnGroup.setEnabled(true);
+    //    }
         
 //          MAKE FOR VOIP
     }

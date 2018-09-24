@@ -77,8 +77,15 @@ class clientInstance extends Thread {
                             break;
                         } else {
                             whisper += line.charAt(i);
+                            if (whisper.equals("everyone")) {
+                                whisper = "";
+                                break;
+                            }
                         }
                     }
+                } else {
+                    System.out.println("Incorrect Communications format from: " + user 
+                                        + "\nTerminating connection.");
                 }
 
                 for (int i = 0; i < clientLimit; i++) {
