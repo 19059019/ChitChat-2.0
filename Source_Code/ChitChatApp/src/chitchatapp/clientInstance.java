@@ -50,27 +50,29 @@ class clientInstance extends Thread {
 
             Timestamp stamp = new Timestamp(System.currentTimeMillis());
             System.out.println(user + " Joined: " + stamp);
-
+            
+            // Update All clients user lists for connection
             for (int i = 0; i < clientLimit; i++) {
                 String message = "*userNames*##";
                 String users = listToString(userNames);
-
                 if (clientThreads[i] != null) {
                     message += user + " is now where its at!" + users;
                     clientThreads[i].output.println(message);
                 }
             }
 
-            // Listen for messages
+            // Listen and handle messages from client
             while (true) {
                 String line = clientMessage.readLine();
                 String whisper = "";
                 Boolean validUser = false;
-
-                if (line.startsWith("EXIT")) {
+                
+                // Check for disconnect
+                if (line.startsWith("@everyone EXIT")) {
                     break;
                 }
-
+                
+                // Test for whisper
                 if (line.startsWith("@")) {
                     for (int i = 1; i < line.length(); i++) {
                         if (Character.isWhitespace(line.charAt(i))) {
@@ -87,7 +89,9 @@ class clientInstance extends Thread {
                     System.out.println("Incorrect Communications format from: " + user 
                                         + "\nTerminating connection.");
                 }
-
+                
+                
+                // Send Message to correct client/s
                 for (int i = 0; i < clientLimit; i++) {
                     if (whisper.equals("") && clientThreads[i] != null) {
                         clientThreads[i].output.println(user + ": " + line);
@@ -115,17 +119,18 @@ class clientInstance extends Thread {
             synchronized (this) {
                 userNames.remove(user);
             }
-
+            
+            // Update All clients user lists for connection
             for (int i = 0; i < clientLimit; i++) {
                 String message = "*userNames*##";
                 String users = listToString(userNames);
-
                 if (clientThreads[i] != null) {
                     message += user + " Is no longer where it's at!" + users;
                     clientThreads[i].output.println(message);
                 }
             }
-
+            
+            // Set this client to null
             for (int i = 0; i < clientLimit; i++) {
                 if (clientThreads[i] == this) {
                     clientThreads[i] = null;

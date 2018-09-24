@@ -1,2 +1,1 @@
-make
 java chitchatapp.ClientPane
