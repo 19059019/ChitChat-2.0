@@ -170,11 +170,13 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstOnlineUsers = new javax.swing.JList<>();
-        btnCall = new javax.swing.JButton();
-        btnEndCall = new javax.swing.JButton();
+        btnWhisper = new javax.swing.JButton();
+        btnGroup = new javax.swing.JButton();
         lblNumUsers = new javax.swing.JLabel();
         btnSend = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        btnCall = new javax.swing.JButton();
+        btnEndCall = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -204,19 +206,19 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         });
         jScrollPane2.setViewportView(lstOnlineUsers);
 
-        btnCall.setText("Call via VOIP");
-        btnCall.setEnabled(false);
-        btnCall.addActionListener(new java.awt.event.ActionListener() {
+        btnWhisper.setText("Whisper");
+        btnWhisper.setEnabled(false);
+        btnWhisper.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCallActionPerformed(evt);
+                btnWhisperActionPerformed(evt);
             }
         });
 
-        btnEndCall.setText("End Call");
-        btnEndCall.setEnabled(false);
-        btnEndCall.addActionListener(new java.awt.event.ActionListener() {
+        btnGroup.setText("Return to Group Chat");
+        btnGroup.setEnabled(false);
+        btnGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEndCallActionPerformed(evt);
+                btnGroupActionPerformed(evt);
             }
         });
 
@@ -233,6 +235,20 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        btnCall.setText("Call");
+        btnCall.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCallActionPerformed(evt);
+            }
+        });
+
+        btnEndCall.setText("End Call");
+        btnEndCall.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEndCallActionPerformed(evt);
             }
         });
 
@@ -260,9 +276,14 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                                 .addComponent(lblNumUsers))
                             .addComponent(jScrollPane2)
                             .addComponent(lblTitle)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(btnEndCall, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnCall, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(btnGroup, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                    .addComponent(btnWhisper, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                                .addGap(26, 26, 26)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnEndCall, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnCall, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -281,9 +302,13 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCall)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnWhisper)
+                            .addComponent(btnCall))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEndCall)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGroup)
+                            .addComponent(btnEndCall))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfMessageInput, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -321,6 +346,14 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCallActionPerformed
+        
+    }//GEN-LAST:event_btnCallActionPerformed
+
+    private void btnEndCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndCallActionPerformed
+        
+    }//GEN-LAST:event_btnEndCallActionPerformed
+
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {
         if (!tfMessageInput.getText().equals("") && !tfMessageInput.getText().equals("Type message or command here...")) {
@@ -346,31 +379,27 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         }
     }
 
-    private void btnCallActionPerformed(java.awt.event.ActionEvent evt) {
-    //    String target = lstOnlineUsers.getSelectedValue();
+    private void btnWhisperActionPerformed(java.awt.event.ActionEvent evt) {
+        String target = lstOnlineUsers.getSelectedValue();
 
-    //    if (!tfMessageInput.getText().equals("") && !tfMessageInput.getText().equals("Type message here...")) {
-    //        String msg = tfMessageInput.getText();
+        if (!tfMessageInput.getText().equals("") && !tfMessageInput.getText().equals("Type message here...")) {
+            String msg = tfMessageInput.getText();
 
-    //        output.println("@" + target + " " + msg);
+            output.println("@" + target + " " + msg);
 
-    //        tfMessageInput.setText("Type message here...");
-    //        btnGroup.setEnabled(true);
-    //    }
-        
-//          MAKE FOR VOIP
+            tfMessageInput.setText("Type message here...");
+            btnGroup.setEnabled(true);
+        }
     }
 
     private void lstOnlineUsersValueChanged(javax.swing.event.ListSelectionEvent evt) {
-        btnCall.setEnabled(true);
+        btnWhisper.setEnabled(true);
     }
 
-    private void btnEndCallActionPerformed(java.awt.event.ActionEvent evt) {
-//        btnEndCall.setEnabled(false);
-//        btnCall.setEnabled(false);
-//        lstOnlineUsers.clearSelection();
-
-//        make for VOIP
+    private void btnGroupActionPerformed(java.awt.event.ActionEvent evt) {
+        btnGroup.setEnabled(false);
+        btnWhisper.setEnabled(false);
+        lstOnlineUsers.clearSelection();
     }
 
     private void tfMessageInputFocusGained(java.awt.event.FocusEvent evt) {
@@ -382,7 +411,9 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCall;
     private javax.swing.JButton btnEndCall;
+    private javax.swing.JButton btnGroup;
     private javax.swing.JButton btnSend;
+    private javax.swing.JButton btnWhisper;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

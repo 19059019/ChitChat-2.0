@@ -69,9 +69,16 @@
                               </Group>
                               <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
                               <Component id="lblTitle" max="32767" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="btnEndCall" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="btnCall" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="btnGroup" alignment="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="btnWhisper" alignment="0" pref="110" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="btnEndCall" max="32767" attributes="0"/>
+                                      <Component id="btnCall" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
@@ -98,9 +105,15 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane2" min="-2" pref="185" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnCall" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnWhisper" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnCall" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnEndCall" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnGroup" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnEndCall" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -185,22 +198,22 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="btnCall">
+        <Component class="javax.swing.JButton" name="btnWhisper">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Call via VOIP"/>
+            <Property name="text" type="java.lang.String" value="Whisper"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCallActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnWhisperActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnEndCall">
+        <Component class="javax.swing.JButton" name="btnGroup">
           <Properties>
-            <Property name="text" type="java.lang.String" value="End Call"/>
+            <Property name="text" type="java.lang.String" value="Return to Group Chat"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEndCallActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGroupActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblNumUsers">
@@ -222,6 +235,22 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnCall">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Call"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCallActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnEndCall">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="End Call"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEndCallActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
