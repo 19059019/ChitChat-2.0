@@ -1,7 +1,0 @@
-{
-	"numPlayers": 2,
-	"threads": 4,
-	"time": 4,
-	"path1": "player/minimax",
-	"path2": "player/random_from_downloads"
-}
