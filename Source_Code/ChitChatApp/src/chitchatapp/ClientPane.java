@@ -195,7 +195,6 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        lblTitle1 = new javax.swing.JLabel();
         groupInput = new javax.swing.JTextField();
         jScrollPane5 = new javax.swing.JScrollPane();
         groupUsers = new javax.swing.JList<>();
@@ -373,10 +372,6 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
 
         jLabel2.setText("Users:");
 
-        lblTitle1.setFont(new java.awt.Font("Purisa", 1, 24)); // NOI18N
-        lblTitle1.setForeground(new java.awt.Color(51, 153, 0));
-        lblTitle1.setText("<html> <div stlye=\"text-align:center;\">CHIT CHAT<sup><font size=\"4\"> VOIP</font></sup><br><font size=\"4\">It's Where It's At!</font></div>");
-
         groupInput.setText("Enter Message...");
         groupInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -402,13 +397,10 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTitle1, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(jLabel2)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(69, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -416,8 +408,7 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton4))
                             .addComponent(groupInput, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -425,14 +416,13 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(lblTitle1, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3))
-                    .addComponent(jScrollPane4))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(groupInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
@@ -441,8 +431,6 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                     .addComponent(jButton4))
                 .addContainerGap())
         );
-
-        lblTitle.setIcon(logo);
 
         jTabbedPane1.addTab("VoiP", jPanel2);
 
@@ -575,7 +563,6 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblNumUsers;
     private javax.swing.JLabel lblTitle;
-    private javax.swing.JLabel lblTitle1;
     private javax.swing.JList<String> lstOnlineUsers;
     private javax.swing.JTextArea taChatArea;
     private javax.swing.JTextField tfMessageInput;

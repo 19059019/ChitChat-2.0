@@ -284,16 +284,11 @@
                               <Component id="jScrollPane4" min="-2" pref="266" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lblTitle1" pref="322" max="32767" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jButton3" min="-2" pref="158" max="-2" attributes="0"/>
-                                          <Component id="jScrollPane5" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jButton3" min="-2" pref="158" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane5" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace pref="69" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -304,10 +299,9 @@
                                   </Group>
                                   <Component id="groupInput" alignment="0" min="-2" pref="266" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -316,16 +310,15 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="lblTitle1" pref="81" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jScrollPane5" min="-2" pref="243" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButton3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPane4" max="32767" attributes="0"/>
+                          <Component id="jScrollPane4" min="-2" pref="388" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="groupInput" min="-2" pref="32" max="-2" attributes="0"/>
@@ -380,20 +373,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Users:"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="lblTitle1">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Purisa" size="24" style="1"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="99" red="33" type="rgb"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;div stlye=&quot;text-align:center;&quot;&gt;CHIT CHAT&lt;sup&gt;&lt;font size=&quot;4&quot;&gt; VOIP&lt;/font&gt;&lt;/sup&gt;&lt;br&gt;&lt;font size=&quot;4&quot;&gt;It&apos;s Where It&apos;s At!&lt;/font&gt;&lt;/div&gt;"/>
-              </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="ImageIcon logo = new ImageIcon(&quot;chitchat.png&quot;);&#xa;        lblTitle.setIcon(logo);"/>
-              </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="groupInput">
               <Properties>
