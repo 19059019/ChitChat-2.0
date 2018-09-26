@@ -138,8 +138,8 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
                     if (clientThreads[i] == null) {
                         clientThreads[i] = new clientInstance(client, clientThreads, userNames);
                         clientThreads[i].start();
-                        names = new Vector<>(Arrays.asList(clientThreads[i].getUserNames().split("##")));
-                        lstOnlineUsers.setListData(names);
+//                        names = new Vector<>(Arrays.asList(clientThreads[i].getUserNames().split("##")));
+//                        lstOnlineUsers.setListData(names);
                         break;
                     }
                 }
@@ -152,6 +152,11 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
                     output.close();
                     client.close();
                 }
+                
+                System.out.println(clientThreads[i].getUserNames());
+                
+                names = new Vector<>(Arrays.asList(clientThreads[i].getUserNames().split("##")));
+                lstOnlineUsers.setListData(names);
             } catch (IOException e) {
                 System.err.println(e);
             }

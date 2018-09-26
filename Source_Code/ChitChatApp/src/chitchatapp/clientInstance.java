@@ -60,6 +60,7 @@ class clientInstance extends Thread {
             for (int i = 0; i < clientLimit; i++) {
                 String message = "*userNames*##";
                 String users = listToString(userNames);
+                
                 if (clientThreads[i] != null) {
                     message += user + " is now where its at!" + users;
                     clientThreads[i].output.println(message);
@@ -124,7 +125,6 @@ class clientInstance extends Thread {
                     System.out.println("Incorrect Communications format from: " + user 
                                         + "\nTerminating connection.");
                 }
-                
                 
                 // Send Message to correct client/s
                 for (int i = 0; i < clientLimit; i++) {
@@ -192,6 +192,7 @@ class clientInstance extends Thread {
             output.close();
             client.close();
         } catch (IOException e) {
+            System.err.println(e);
         }
     }
 
@@ -202,6 +203,6 @@ class clientInstance extends Thread {
     }
 
     public String getUserNames() {
-        return listToString(userNames);
+        return listToString(userNames) + "##" + user;
     }
 }
