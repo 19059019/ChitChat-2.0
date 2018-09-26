@@ -1,21 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package chitchatapp;
 
-/**
- *
- * @author martin
- */
-public class ServerPane extends javax.swing.JFrame {
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Vector;
+
+public class ServerPane extends javax.swing.JFrame implements Runnable {
+
+    private static ServerSocket server = null;
+    private static Socket client = null;
+    private static final int clientLimit = 10;
+    private static final clientInstance[] clientThreads = new clientInstance[clientLimit];
+    private static PrintStream output = null;
+    private static Boolean status = true;
+    private static ArrayList<String> userNames = new ArrayList<String>();
+    private static Vector<String> names = new Vector<String>();
 
     /**
      * Creates new form ServerPane
      */
-    public ServerPane() {
+    public void ServerPaneInit() {
         initComponents();
+        setVisible(true);
     }
 
     /**
@@ -97,35 +107,55 @@ public class ServerPane extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ServerPane.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ServerPane.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ServerPane.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ServerPane.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        new Thread(new ServerPane()).start();
+    }
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ServerPane().setVisible(true);
+    @Override
+    public void run() {
+        ServerPaneInit();
+        serverOps();
+    }
+
+    public void serverOps() {
+        int i;
+        int port = 8000;
+
+        // open ServerSocket
+        try {
+            server = new ServerSocket(port);
+            System.out.println("ChitChat Server Running!");
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+
+        // create new socket for each new client that attempts to connect
+        while (status) {
+            try {
+                client = server.accept();
+                System.out.println("Client attemptig to connect.");
+
+                for (i = 0; i < clientLimit; i++) {
+                    if (clientThreads[i] == null) {
+                        clientThreads[i] = new clientInstance(client, clientThreads, userNames);
+                        clientThreads[i].start();
+                        names = new Vector<>(Arrays.asList(clientThreads[i].getUserNames().split("##")));
+                        lstOnlineUsers.setListData(names);
+                        break;
+                    }
+                }
+
+                // Message if too many clients have connected
+                if (i == clientLimit) {
+                    output = new PrintStream(client.getOutputStream());
+                    output.println("ChitChat chatroom full, unlucky!");
+                    System.out.println("Client rejected due to client limit.");
+                    output.close();
+                    client.close();
+                }
+            } catch (IOException e) {
+                System.err.println(e);
             }
-        });
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -136,4 +166,5 @@ public class ServerPane extends javax.swing.JFrame {
     private javax.swing.JList<String> lstOnlineUsers;
     private javax.swing.JTextArea taClientAct;
     // End of variables declaration//GEN-END:variables
+
 }

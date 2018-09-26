@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 @SuppressWarnings("deprecation")
 class ClientPane extends javax.swing.JFrame implements Runnable {
@@ -63,7 +62,6 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
             serverMessage = new DataInputStream(client.getInputStream());
             clientMessage = new DataInputStream(new BufferedInputStream(System.in));
             output = new PrintStream(client.getOutputStream());
-
         } catch (UnknownHostException e) {
             System.err.println(e);
         } catch (IOException e) {
@@ -72,12 +70,10 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
 
         if (client != null && serverMessage != null && output != null) {
             try {
-
                 user = "";
                 String users = serverMessage.readLine();
                 userNames = new Vector<>(Arrays.asList(users.split("##")));
                 groupUserNames = new Vector<>(Arrays.asList(users.split("##")));
-
 
                 while (user.equals("")) {
                     user = (String) JOptionPane.showInputDialog(null, "Please enter your nickname",
@@ -141,6 +137,7 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                     if (!inGroup) {
                         lstGroupUsers.setListData(userNames);
                     }
+                    
                     message = userNames.get(1);
                     userNames.remove(1);
                     userNames.remove(0);
@@ -272,14 +269,14 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
                             .addComponent(tfMessageInput))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
-                            .addComponent(lblTitle)
+                            .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(btnWhisper, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnGroup, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)))
-                        .addContainerGap(65, Short.MAX_VALUE))))
+                                .addComponent(btnGroup, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(55, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -427,23 +424,23 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_btnGroupCallActionPerformed
 
     private void btnGroupSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGroupSendActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnGroupSendActionPerformed
 
     private void btnCreateGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateGroupActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnCreateGroupActionPerformed
 
     private void btnCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCallActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnCallActionPerformed
 
     private void tfGroupMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfGroupMessageActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_tfGroupMessageActionPerformed
 
     private void lstGroupUsersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstGroupUsersValueChanged
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_lstGroupUsersValueChanged
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {

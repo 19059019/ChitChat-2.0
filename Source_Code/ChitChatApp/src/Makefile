@@ -8,7 +8,7 @@ JC = javac
 CLASSES = \
 	chitchatapp/ClientPane.java\
 	chitchatapp/clientInstance.java\
-	chitchatapp/Server.java
+	chitchatapp/ServerPane.java
 
 default: classes
 

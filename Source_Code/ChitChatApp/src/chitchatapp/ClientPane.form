@@ -71,16 +71,16 @@
                                   <Component id="tfMessageInput" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jScrollPane2" alignment="0" pref="261" max="32767" attributes="0"/>
-                                  <Component id="lblTitle" max="32767" attributes="0"/>
+                                  <Component id="lblTitle" min="-2" pref="261" max="-2" attributes="0"/>
                                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="btnWhisper" alignment="0" max="32767" attributes="0"/>
                                       <Component id="btnGroup" alignment="0" pref="237" max="32767" attributes="0"/>
                                   </Group>
+                                  <Component id="jScrollPane2" alignment="0" min="-2" pref="271" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="65" max="32767" attributes="0"/>
+                              <EmptySpace pref="55" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>

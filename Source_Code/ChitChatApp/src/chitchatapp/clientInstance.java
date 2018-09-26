@@ -200,4 +200,8 @@ class clientInstance extends Thread {
         out = input.stream().map((name) -> "##" + name).reduce(out, String::concat);
         return out;
     }
+
+    public String getUserNames() {
+        return listToString(userNames);
+    }
 }
