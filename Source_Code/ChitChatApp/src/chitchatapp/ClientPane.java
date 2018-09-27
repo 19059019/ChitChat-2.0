@@ -1,4 +1,3 @@
-
 package chitchatapp;
 
 import java.io.BufferedInputStream;
@@ -22,10 +21,9 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
     private static PrintStream output = null;
     private static boolean status = true;
     private static boolean inGroup = false;
-    public static String user = "Default";
-    public static Vector<String> userNames = new Vector<>();
-    public static Vector<String> groupUserNames = new Vector<>();
-
+    private  static String user = "Default";
+    private static Vector<String> userNames = new Vector<>();
+    private static Vector<String> groupUserNames = new Vector<>();
 
     public void ClientPaneInit() {
         initComponents();
@@ -74,7 +72,6 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                 user = "";
                 String users = serverMessage.readLine();
                 userNames = new Vector<>(Arrays.asList(users.split("##")));
-                groupUserNames = new Vector<>(Arrays.asList(users.split("##")));
 
                 while (user.equals("")) {
                     user = (String) JOptionPane.showInputDialog(null, "Please enter your nickname",
@@ -105,7 +102,7 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                     if (message.startsWith("EXIT")) {
                         break;
                     } else {
-                        output.println("@everyone "+message);
+                        output.println("@everyone " + message);
                     }
                 }
 
@@ -134,12 +131,22 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         try {
             while ((message = serverMessage.readLine()) != null) {
                 if (message.startsWith("*userNames*")) {
-                    // Update usrer list
+                    // Update user list
                     userNames = new Vector<>(Arrays.asList(message.split("##")));
                     if (!inGroup) {
                         lstGroupUsers.setListData(userNames);
+                    } else {
+//                        // Check if group member left
+                        for (String s : groupUserNames) {
+                            if (!userNames.contains(s)) {
+                                taGroupText.append("\n" + s + " Has Left The group");
+                                // Remove Group member on server side
+                                output.println("*groupremove##" + s);
+                                groupUserNames.remove(s);
+                            }
+                        }
                     }
-                    
+
                     message = userNames.get(1);
                     userNames.remove(1);
                     userNames.remove(0);
@@ -156,16 +163,20 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
 
                     inGroup = true;
                     ArrayList<String> components = new ArrayList<>(Arrays.asList(message.split("##")));
-                    message = components.get(1);
-                    if (message.startsWith(user + ": *startgroup")) {
+                    if (components.get(1).contains(": *startgroup")) {
                         // Set user names of group
+                        System.out.println("Starting Group");
                         message = "Added to a group";
                         components.remove(0);
-                        components.remove(1);
+                        components.remove(0);
+                        for (String s : components) {
+                            System.out.println(s);
+                        }
                         groupUserNames = new Vector<>(components);
-                        lstGroupUsers.setListData(userNames);
+                        lstGroupUsers.setListData(groupUserNames);
+                    } else {
+                        message = components.get(1);
                     }
-                    
                     taGroupText.append("\n" + message);
                     continue;
                 }
@@ -442,13 +453,12 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGroupCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGroupCallActionPerformed
-        
+
     }//GEN-LAST:event_btnGroupCallActionPerformed
 
     private void btnGroupSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGroupSendActionPerformed
         if (!tfGroupMessage.getText().equals("") && !tfGroupMessage.getText().equals("Type message or command here...")) {
             String msg = tfGroupMessage.getText();
-
 
             if (msg.startsWith("EXIT")) {
                 output.println("@everyone " + msg);
@@ -476,6 +486,7 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         btnCreateGroup.setEnabled(false);
         Object[] targets = lstGroupUsers.getSelectedValues();
         String addToGroup = "*startgroup";
+        addToGroup += "##" + user;
         for (Object o : targets) {
             addToGroup += "##" + (String) o;
         }
@@ -489,7 +500,7 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_btnCallActionPerformed
 
     private void tfGroupMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfGroupMessageActionPerformed
-        
+
     }//GEN-LAST:event_tfGroupMessageActionPerformed
 
     private void lstGroupUsersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstGroupUsersValueChanged

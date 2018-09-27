@@ -55,12 +55,12 @@ class clientInstance extends Thread {
 
             Timestamp stamp = new Timestamp(System.currentTimeMillis());
             System.out.println(user + " Joined: " + stamp);
-            
+
             // Update All clients user lists for connection
             for (int i = 0; i < clientLimit; i++) {
                 String message = "*userNames*##";
                 String users = listToString(userNames);
-                
+
                 if (clientThreads[i] != null) {
                     message += user + " is now where its at!" + users;
                     clientThreads[i].output.println(message);
@@ -73,12 +73,12 @@ class clientInstance extends Thread {
                 String whisper = "";
                 Boolean validUser = false;
                 Boolean groupMessage = false;
-                
+
                 // Check for disconnect
                 if (line.startsWith("@everyone EXIT")) {
                     break;
                 }
-                
+
                 // Test for whisper
                 if (line.startsWith("@")) {
                     for (int i = 1; i < line.length(); i++) {
@@ -93,17 +93,27 @@ class clientInstance extends Thread {
                         }
                     }
 
-                // Test for other type of command
-                } else if (line.startsWith("*")){
+                    // Test for other type of command
+                } else if (line.startsWith("*")) {
                     // Split command by the '##' delimiter
                     LinkedList<String> components = new LinkedList<>(Arrays.asList(line.split("##")));
                     String command = components.get(0);
+
+                    // *groupremove##username: Remove user from local group
+                    if (command.equals("*groupremove")) {
+                        command = "*group";
+                        if (groupNames.contains(components.get(1))) {
+                            groupNames.remove(components.get(1));
+                        }
+                        continue;
+                    }
+                    
                     // *startgroup##member1##member2##member3: creates a group
                     if (command.equals("*startgroup")) {
                         command = "*group";
                         groupMessage = true;
                         String alert = "Group Started: " + user;
-                        
+
                         for (clientInstance c : clientThreads) {
                             if (c != null && components.contains(c.user)) {
                                 addGroupUser(c.user);
@@ -114,7 +124,7 @@ class clientInstance extends Thread {
                                 alert += ", " + c.user;
                             }
                         }
-                        line = alert;
+                        System.out.println(line);
                         System.out.println(alert);
                     }
 
@@ -123,28 +133,29 @@ class clientInstance extends Thread {
                         groupMessage = true;
                         if (groupNames.size() == 1) {
                             line = "Group Not Yet Created";
-                        } else if (!line.startsWith("Group Started: ")) {
+                        } else if (!line.startsWith("*startgroup")) {
                             line = components.get(1);
                         }
                     }
+
                 } else {
-                    System.out.println("Incorrect Communications format from: " + user 
-                                        + "\nTerminating connection.");
+                    System.out.println("Incorrect Communications format from: " + user
+                            + "\nTerminating connection.");
                 }
-                
+
                 // Send Message to correct client/s
                 for (int i = 0; i < clientLimit; i++) {
 
                     // group message forwarding
-                    if (groupMessage && clientThreads[i] != null){
+                    if (groupMessage && clientThreads[i] != null) {
                         if (groupNames.contains(clientThreads[i].user)) {
                             // send to group member
-                            clientThreads[i].output.println("*group##"+user + ": " + line);
+                            clientThreads[i].output.println("*group##" + user + ": " + line);
                             validUser = true;
                         }
                         continue;
                     }
-                    
+
                     // General chat and whisper forwarding
                     if (whisper.equals("") && clientThreads[i] != null) {
                         //send to all valid users
@@ -174,7 +185,7 @@ class clientInstance extends Thread {
             synchronized (this) {
                 userNames.remove(user);
             }
-            
+
             // Update All clients user lists for connection
             for (int i = 0; i < clientLimit; i++) {
                 String message = "*userNames*##";
@@ -184,7 +195,7 @@ class clientInstance extends Thread {
                     clientThreads[i].output.println(message);
                 }
             }
-            
+
             // Set this client to null
             for (int i = 0; i < clientLimit; i++) {
                 if (clientThreads[i] == this) {
@@ -209,7 +220,7 @@ class clientInstance extends Thread {
     public String getUserNames() {
         return listToString(userNames) + "##" + user;
     }
-    
+
     public void addGroupUser(String user) {
         if (!user.equals(this.user)) {
             groupNames.add(user);
