@@ -98,19 +98,23 @@ class clientInstance extends Thread {
                     // Split command by the '##' delimiter
                     LinkedList<String> components = new LinkedList<>(Arrays.asList(line.split("##")));
                     String command = components.get(0);
-                    line = components.get(components.size() - 1);
                     // *startgroup##member1##member2##member3: creates a group
                     if (command.equals("*startgroup")) {
                         command = "*group";
                         groupMessage = true;
                         String alert = "Group Started: " + user;
-                        line = "You have been added to a group";
-
-                        for (int i = 1; i < components.size(); i++) {
-                            groupNames.add(components.get(i));
-                            alert += ", " + components.get(i);
+                        
+                        for (clientInstance c : clientThreads) {
+                            if (c != null && components.contains(c.user)) {
+                                addGroupUser(c.user);
+                                c.addGroupUser(user);
+                                for (int i = 1; i < components.size(); i++) {
+                                    c.addGroupUser(components.get(i));
+                                }
+                                alert += ", " + c.user;
+                            }
                         }
-
+                        line = alert;
                         System.out.println(alert);
                     }
 
@@ -119,6 +123,8 @@ class clientInstance extends Thread {
                         groupMessage = true;
                         if (groupNames.size() == 1) {
                             line = "Group Not Yet Created";
+                        } else if (!line.startsWith("Group Started: ")) {
+                            line = components.get(1);
                         }
                     }
                 } else {
@@ -135,10 +141,8 @@ class clientInstance extends Thread {
                             // send to group member
                             clientThreads[i].output.println("*group##"+user + ": " + line);
                             validUser = true;
-                        } else {
-                            System.out.println("Wololo");
-                            continue;
                         }
+                        continue;
                     }
                     
                     // General chat and whisper forwarding
@@ -204,5 +208,11 @@ class clientInstance extends Thread {
 
     public String getUserNames() {
         return listToString(userNames) + "##" + user;
+    }
+    
+    public void addGroupUser(String user) {
+        if (!user.equals(this.user)) {
+            groupNames.add(user);
+        }
     }
 }

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 import javax.swing.ImageIcon;
@@ -133,6 +134,7 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         try {
             while ((message = serverMessage.readLine()) != null) {
                 if (message.startsWith("*userNames*")) {
+                    // Update usrer list
                     userNames = new Vector<>(Arrays.asList(message.split("##")));
                     if (!inGroup) {
                         lstGroupUsers.setListData(userNames);
@@ -147,6 +149,25 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                         user = userNames.get(userNames.size() - 1);
                         setTitle("ChitChat - " + user);
                     }
+                } else if (message.startsWith("*group")) {
+                    // Recieve group message
+                    System.out.println("Recieving group message");
+                    System.out.println(message);
+
+                    inGroup = true;
+                    ArrayList<String> components = new ArrayList<>(Arrays.asList(message.split("##")));
+                    message = components.get(1);
+                    if (message.startsWith(user + ": *startgroup")) {
+                        // Set user names of group
+                        message = "Added to a group";
+                        components.remove(0);
+                        components.remove(1);
+                        groupUserNames = new Vector<>(components);
+                        lstGroupUsers.setListData(userNames);
+                    }
+                    
+                    taGroupText.append("\n" + message);
+                    continue;
                 }
 
                 System.out.println(message);
@@ -215,6 +236,7 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
 
         jLabel1.setText("Users:");
 
+        lstOnlineUsers.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstOnlineUsers.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 lstOnlineUsersValueChanged(evt);
@@ -335,7 +357,7 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
 
         jLabel2.setText("Users:");
 
-        tfGroupMessage.setText("Enter Message...");
+        tfGroupMessage.setText("Type message or command here...");
         tfGroupMessage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfGroupMessageActionPerformed(evt);
@@ -424,11 +446,42 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_btnGroupCallActionPerformed
 
     private void btnGroupSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGroupSendActionPerformed
+        if (!tfGroupMessage.getText().equals("") && !tfGroupMessage.getText().equals("Type message or command here...")) {
+            String msg = tfGroupMessage.getText();
 
+
+            if (msg.startsWith("EXIT")) {
+                output.println("@everyone " + msg);
+
+                tfMessageInput.setText("Cheerio!");
+
+                try {
+                    output.close();
+                    clientMessage.close();
+                    serverMessage.close();
+                    client.close();
+                    System.exit(0);
+                } catch (IOException e) {
+                    System.err.println(e);
+                }
+            }
+            output.println("*group##" + msg);
+            System.out.println("*group##" + msg);
+            tfGroupMessage.setText("Type message or command here...");
+        }
     }//GEN-LAST:event_btnGroupSendActionPerformed
 
     private void btnCreateGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateGroupActionPerformed
-
+        // TODO Create Group
+        btnCreateGroup.setEnabled(false);
+        Object[] targets = lstGroupUsers.getSelectedValues();
+        String addToGroup = "*startgroup";
+        for (Object o : targets) {
+            addToGroup += "##" + (String) o;
+        }
+        System.out.println("Attempting to start a group");
+        System.out.println(addToGroup);
+        output.println(addToGroup);
     }//GEN-LAST:event_btnCreateGroupActionPerformed
 
     private void btnCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCallActionPerformed
@@ -436,7 +489,7 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_btnCallActionPerformed
 
     private void tfGroupMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfGroupMessageActionPerformed
-
+        
     }//GEN-LAST:event_tfGroupMessageActionPerformed
 
     private void lstGroupUsersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstGroupUsersValueChanged

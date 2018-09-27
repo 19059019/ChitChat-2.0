@@ -1,2 +1,2 @@
 make
-java chitchatapp.Server
+java chitchatapp.ServerPane
