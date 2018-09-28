@@ -3,6 +3,8 @@ package chitchatapp;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -119,6 +121,7 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
     public void serverOps() {
         int i;
         int port = 8000;
+        DatagramSocket socket = null;
 
         // open ServerSocket
         try {
@@ -138,8 +141,6 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
                     if (clientThreads[i] == null) {
                         clientThreads[i] = new clientInstance(client, clientThreads, userNames);
                         clientThreads[i].start();
-//                        names = new Vector<>(Arrays.asList(clientThreads[i].getUserNames().split("##")));
-//                        lstOnlineUsers.setListData(names);
                         break;
                     }
                 }
@@ -152,11 +153,19 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
                     output.close();
                     client.close();
                 }
+
+                //this should get replaced by sending client behavior to server
+                socket = new DatagramSocket(port);
+                byte[] payload = new byte[100];
+                DatagramPacket p = new DatagramPacket(payload, payload.length);
+                socket.receive(p);
+                byte[] buff = p.getData();
                 
-                System.out.println(clientThreads[i].getUserNames());
-                
-                names = new Vector<>(Arrays.asList(clientThreads[i].getUserNames().split("##")));
+                names = new Vector<>(Arrays.asList(new String(buff).split("##")));
                 lstOnlineUsers.setListData(names);
+                
+                socket.close();
+            
             } catch (IOException e) {
                 System.err.println(e);
             }

@@ -4,6 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -68,6 +71,8 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         }
 
         if (client != null && serverMessage != null && output != null) {
+            DatagramSocket socket = null;
+            
             try {
                 user = "";
                 String users = serverMessage.readLine();
@@ -95,7 +100,15 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
                 new Thread(new ClientPane()).start();
 
                 output.println(user);
-
+                
+                //this should get replaced by sending client behavior to server
+                socket = new DatagramSocket();
+                String tosend = users + "##" + user;
+                byte[] payload = tosend.getBytes();
+                DatagramPacket p = new DatagramPacket(payload, payload.length, InetAddress.getByName(host), 8000);
+               
+                socket.send(p);
+                
                 while (status) {
                     String message = clientMessage.readLine().trim();
 
