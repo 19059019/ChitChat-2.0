@@ -139,7 +139,7 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
 
                 for (i = 0; i < clientLimit; i++) {
                     if (clientThreads[i] == null) {
-                        clientThreads[i] = new clientInstance(client, clientThreads, userNames);
+                        clientThreads[i] = new clientInstance(client, clientThreads, userNames, taClientAct);
                         clientThreads[i].start();
                         break;
                     }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Arrays;
 import java.sql.Timestamp;
+import javax.swing.JTextArea;
 
 @SuppressWarnings("deprecation")
 class clientInstance extends Thread {
@@ -21,12 +22,14 @@ class clientInstance extends Thread {
     private String user;
     private boolean inGroup = false;
     private ArrayList<String> groupNames = new ArrayList<>();
+    private JTextArea taClientAct;
 
-    public clientInstance(Socket client, clientInstance[] clientThreads, ArrayList<String> userNames) {
+    public clientInstance(Socket client, clientInstance[] clientThreads, ArrayList<String> userNames, JTextArea taClientAct) {
         this.client = client;
         this.clientThreads = clientThreads;
         this.userNames = userNames;
         clientLimit = clientThreads.length;
+        this.taClientAct = taClientAct;
     }
 
     @Override
@@ -52,6 +55,11 @@ class clientInstance extends Thread {
 
             output.println("Welcome to Chit Chat, it's where its at!"
                     + "\n To leave the chatroom send \'EXIT\'");
+            
+            //ServerPane.addToTA("User joined");
+            synchronized (this) {
+                taClientAct.append("User joined");
+            }
 
             Timestamp stamp = new Timestamp(System.currentTimeMillis());
             System.out.println(user + " Joined: " + stamp);
