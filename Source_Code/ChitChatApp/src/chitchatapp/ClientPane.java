@@ -4,6 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -98,6 +101,8 @@ class ClientPane extends javax.swing.JFrame implements Runnable {
         }
 
         if (client != null && serverMessage != null && output != null) {
+            DatagramSocket socket = null;
+            
             try {
                 // get username
                 user = "";

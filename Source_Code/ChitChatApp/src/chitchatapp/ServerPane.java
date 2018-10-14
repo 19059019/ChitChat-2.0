@@ -135,6 +135,7 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
     public void serverOps() {
         int i;
         int port = 8000;
+        DatagramSocket socket = null;
 
         // open ServerSocket
         try {
