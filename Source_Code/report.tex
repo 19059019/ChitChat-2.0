@@ -1,146 +1,197 @@
-\documentclass[12pt]{article}
+\documentclass[13pt]{article}
 
 \begin{document}
 
-\title{Tutorial 1 Report}
-\author{M Shepherd, 19059019; M von Fintel, 20058837}
-\date{8 August 2018}
+\title{Project 4 Report}
+\author{M Shepherd, 19059020@sun.ac.za \\ M von Fintel, 20058837@sun.ac.za}
+\date{21 September 2018}
 
 \maketitle
 
-\centerline{ChitChat - It's where it's at!}
+\centerline{\textbf{Voice over Internet Protocol}}
 
 \newpage
+\tableofcontents
+\newpage
 
-\section{Project Description}
+\section{Introduction}
 
-This project was to implement a single server, multiple client chat program.
-Many clients can connect to the server and can chat, that being send messages to
-all the other clients connected to the server. Clients can also send messages to
-other individual clients in a function known as whispering. What follows is a brief,
-concise description of the different parts of the project.
+Voice over Internet Protocol (VoIP) is a method and group of technologies that allow for voice transmission over Internet Protocol (IP) networks. This enables two users to communicate via voice, without having to use a public switched network. The digital information is packed into packets and is transmitted via IP.
+\\\\
+For this project, it was required to create a VoIP system implementation to enable multiple users call each other over the local network.
+
+\section{Project Overview}
+
+As was said, the aim of this project was to implement a VoIP system. Many clients could connect to the server and could call each other over VoIP. The program was implemented using Java sockets. Users could call each other, make conference calls and message each other.
 
 \subsection{The Server}
 
-The server handles all the incoming messages sent from clients and sends them on
-to all the other clients. It creates a \texttt{ServerSocket} on port 8000. It continually
-listens for new clients to connect and creates a new socket each time someone
-does. It is therefore a multi-threaded implementation. More will be said on this
-when the client side is discussed.
+The server coordinates all the user activity. Each user connects to the server via a client. Many clients can connect to the server at the same time. A \texttt{clientInstance} is made for each client that connects. This instance of each client controls how the clients connect and disconnect. It also keeps track of the clients' behavior.
 \\\\
-There is currently a limit to the amount of clients that
-can join to make sure clients have a seamless, exclusive experience. This is currently set
-at ten clients. If the chatroom is full, i.e. there are already ten clients, the new client
-will be warned with an appropriate message and will be shutdown.
+The server also sets up the connection for calls, group calls and voice notes. Once the connection is set up though, the clients communicate amongst each other and the server plays no part in the communications, apart from termination of calls.
 
 \subsection{The Client}
 
-The client runs behind a GUI. The GUI has text areas for the chat and message
-composing. A list of online users is also displayed. When the user starts the
-client, the user has to input a username and the host (IP
-address of the server) they wish to connect to. The input is done via \texttt{JOption.showInputDialog()}.
-The inputted host is verified and the user is notified if it is unknown. If it is known, the client
-connects to the Server at that host. The username is also checked against the list of online users to
-make sure it will be unique.
+The client is the interface to the user and allows the user to connect to other users via the client. The client provides the interface and the infrastructure to make calls, chat via text and send voice notes with other clients that are connected to the server.
 \\\\
-The client then listens for messages that come in the \texttt{DataInputStream} from the Server.
-All messages, including whispers, and the list of online users are sent to clients on
-this \texttt{DataInputStream}. Messages types are identified by the prefix of the string. For
-example, if the message starts with "\texttt{*userNames*}", then it is a string representation
-of the list of online users.
-\\\\
-Sending messages, whispering etcetera are all done by buttons that have \texttt{ActionPerformed}
-listeners.
+Once the user has specified the IP address of the server they wish to connect to, the client connects to the server and then waits for incoming messages, voice notes and calls from other clients.
 
 \section{Features}
 
-\subsection{Included Features}
-
-The list of features included, with a description of each:
-
-\begin{itemize}
-\item Client GUI
-\begin{itemize}
-\item The GUI has text area for message input and messages sent from other users.
-\item A list of online users is sent to all Clients connected and is displayed.
-If a user is selected from the list, the Client will whisper to that user.
-\item Then number of online users is also displayed.
-\end{itemize}
-\item The Client can send and receive messages from the Server.
-\begin{itemize}
-\item This is done concurrently.
-\item Many Clients can connect to the same Server.
-\item When a Client sends a message to the Server, it is then sent to all the
-other Clients connected to the Server.
-\end{itemize}
-\item Different Client instances can also message each other privately, known as whispering.
-The message is sent via the Server, but is only displayed in the GUI of the Client it is meant for.
-\item All users connected are notified when other users are connecting and disconnecting.
-\item When connecting to the Server, all users have the ability to chose a username.
-\begin{itemize}
-\item This username is checked for duplicates against the list of other users connected to the
-Server.
-\end{itemize}
-\item Stable connection between Client and Server.
-\begin{itemize}
-\item If either are interrupted, the other will remain stable.
-\item Clients connecting and disconnecting do not affect the functioning
-of the Server.
-\end{itemize}
-\end{itemize}
-
-\section{Algorithms and Data Structures Used}
-
-A \texttt{clientInstance} class was made to store the information of each Client instance. The Server stores
-an array of type \texttt{clientInstance}, with each instance representing a Client that is connected
-to the Server. \texttt{clientInstance} stores the \texttt{DataInputStream} for the Client, the \texttt{PrintStream} for messages coming
-from the Server, the socket and other information. In the \texttt{clientInstance}'s \texttt{run()} method, it listens
-for messages and performs certain tasks based on the prefix, as described earlier. The \texttt{run()}
-method runs concurrently as the \texttt{clientInstance} class extends the Java \texttt{Thread} class.
+Clients can send global text messages to all clients connected to the server. They can also text message individual clients with a function known as whispering.
 \\\\
-The \texttt{ClientPane} class, which runs the Client behind the GUI, is also concurrent.
-Each user has their own client, each with their own GUI. Messages can be sent and received
-concurrently.
+Clients can send voice notes to each other.
 \\\\
-Messages are sent from a Client to the Server on a \texttt{PrintStream} and messages are sent from the Server
-to all the Clients by a \texttt{DataInputStream}. All the messages get sent to all the Client
-instances connected to the server. If, say, the message is a whisper between two
-specific Clients, each Client will receive the message, but will only display it to the
-user if the message is meant for that Client.
+Clients can make groups from users that are connected and can text message and send voice notes in these groups. Voice calling is also an feature in these groups. All clients in the group are able to speak and take part in this, hence it is known as conference calling.
+\subsection{Extra Features}
+
+Users can private text message each other, known as whispering.
+\\\\
+Users could specify a unique nickname, on top of just using hostnames. This made the appearance in the client GUI neater and more professional. It also made it easier to identify between clients.
+
+\subsection{Unimplemented Features}
+
+Java mixers was not used to remove echos, distortions and dead zones in the calls.
+
+\section{Description of Source Files}
+
+Most of the development of this project was done in Netbeans. This means that everything is stored in the Netbeans project format. The source files are located in the package folder within the src folder.
+\\\\
+There are four source files:
+\\\\
+\texttt{SenderPane.java} contains all the code for the server. This creates the initial connection and creates a \texttt{clientInstance} for each client that connects.
+\\\\
+\texttt{clientInstance.java} is the class that controls the server side interactions for each client. The connection is created and stored. It listens for incoming messages from other clients and sends outgoing messages to the client it represents.
+\\\\
+\texttt{ClientPane.java} is the interface that the user interacts with. It provides all the infrastructure for calling, voice notes and text messages.
+\\\\
+\texttt{sendPacket.java} is the class that sends voice notes and call sound. It sends byte buffers using UDP.
+
+\section{Program Flow Description}
+
+Once the server is up and running clients are free to connect. When the client is run, the user is prompted for the IP address (host) of the server to connect to. The client the connects to the server. The clients can then chat.
+\\\\
+To make a call, users must make a group by selecting the users or users they wish to speak to from the list of connected clients. The call is then initiated by pressing the start call button and stopped by the end call button.
 
 \section{Experiments and Testing}
 
-The project was tested throughly. We started out by making a basic working implementation of
-a single client message passer and then worked from there, adding features and improvements in small
-steps. The first small steps making separate threads for sending and receiving data and then
-allowing the server to spawn multiple clientInstance threads to allow for multiple client connections.
-Every time a feature was added, it was experimented and tested to make sure it worked. At each step
-we also tested the general functionality of the project to ensure the addition did not
-stop anything else from working properly.
+\subsection{Text Messaging}
+
+\textbf{Global Chat} \\
+We tested the global chat, by connecting to our server with three clients. We sent messages from all users concurrently and monitored the receiver box on all sides.
 \\\\
-When we had what we thought was our final implementation, we tested it at the
-NARGA labs on many different computers, all connecting at the same time. We tried our best
-to model a real world situation, by having many users typing, sending, receiving, whispering, connecting
-and disconnecting, all at the same time. We also tested for Server disruptions and
-made sure it was stable.
+The messages came through as expected, which shows that our global chat behaved correctly to our expectations.
 \\\\
-The GUI was also subject to much experimenting and testing to make sure that it was
-usable and did not break. We implemented many logic rules for buttons and other input
-areas to make sure the user could not do something that they should not do.
+\textbf{Group Channel Chat} \\
+We tested the group channels by connecting to our server with four clients and creating two groups with two members each. We then sent messages to the groups from all clients to confirm that the correct clients were receiving the correct messages and that only the correct clients were receiving the messages.
 \\\\
-Most of the issues that we came into contact with involved learning how threading and sockets worked
-together in Java and making sure that the client and server were communicating as we expected. Specifically,
-we struggled with keeping the list of connected users consistent between all of the clients and servers
-and it took many different tests before we settled on the method that we used.
+We found that our Multicast sockets behaved as expected and that the correct clients received the correct  messages. This also shows us that our channels work correctly.
+
+\subsection{Voice Notes}
+
+\textbf{Recording and playback} \\
+To test this, two clients were connected to the server and they were both added to a group. To test this correctly, we would need to compare the local playback to the playback on the receiver side. This was done by first recording the voice note and then playing it locally, after which it was sent to the other user and played on their side.
 \\\\
-Many other small bugs and other problems were found. These were all fixed, resulting in a more
-functional and more stable project.
+This experiment was repeated 5 times for accuracy and we determined that our voice notes were sent correctly and the sound quality on both ends was too similar to find any differences with the naked ear. This voice quality did not display any echos, distortion or dead zones, which showed us that our recording, UDP packet forwarding and playback was working correctly and exceptionally.
+\\\\
+\textbf{Voice Notes and Text Chat}\\
+To test this, we repeated the above \texttt{recording and playback} tests, but also sent messages through the group channel concurrently.
+\\\\
+The results of these tests showed us that our threading correctly separated the tasks and allowed voice to be recorded and played back while sending and receiving messages in a group and globally.
+
+\subsection{Voice Calls}
+
+\textbf{One on One}\\
+This was tested by connecting two clients to our server. The clients were then put into a group and a voice call was started. We then monitored the voice quality and delay on both sides.
+\\\\
+In this experiment, we could clearly hear each other talking and could clearly discern separate words, but the quality was compromised by a slight echo. We did note that there were no dead zones, nor was there any distortion. We also experience a very small delay, but as this delay was smaller than one second, it can be seen as negligible. This showed us that our voice transmission had  small issues, but we were unable to fix these issues in time for the project demonstration.
+\\\\
+\textbf{Three Clients}\\
+This test was almost exactly the same as the One on One test, but with another client added to the group.
+\\\\
+We found that the audio quality and delay was exactly the same as in the previous test. This showed us that our project scaled correctly with the transmission and receiving of voice.
+\\\\
+\textbf{Voice Calls and Text Chat}\\
+To test this, we ran the previous two voice call tests, but sent messages concurrently from all clients in both the group and global chats.
+\\\\
+The results of this test showed us that our threading of sending and receiving voice was done correctly, as there was no interruption to the voice call on any sending or receiving of messages.
+
+\subsection{Audio Format}
+In this section, we experimented with different Sample sizes and bit sizes to find the clearest and most efficient combination.
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline Sample Size & Bit Size & Observation \\
+    \hline 8000 & 8 & Constant static \\
+    \hline 8000 & 16 & Clear quality \\
+    \hline 16000 & 8 & Slight distortion \\
+    \hline 16000 & 16 & Constant distortion \\
+    \hline 44100 & 8 & Slight Static \\
+    \hline 44100 & 16 &  Absolutely Clear\\
+    \hline
+    \end{tabular}
+    \caption{Audio Format Permutations}
+    \label{tab:my_label}
+\end{table}
+\\
+From this table, we can see that the best audio qualities were found at the sample sizes of 8000 and 44100 bits with bit size 16. We chose to use 8000 as our sample size, as we expected this to cause less problems in the transmission of bytes.
+
+\subsection{Conclusions}
+
+In conclusion, it can be said that we have comprehensively tested and experimented with our project.
+\\\\
+The audio format experiments allowed an informed decision to be made with our specific audio formats and the tests showed us that our data structures and implementations have been executed correctly and satisfy the brief of the stated problem.
+
+\section{Issues Encountered}
+
+The main issue encountered was the lack of time we had to fully research everything and make sure our implementation worked perfectly. We managed to get a basic implementation running, but it would have taken more time than we had available due to other projects and tests.
+\\\\
+There was an initial struggle to get the users to be able to talk concurrently to each other. This was overcome by sitting and eliminating bugs in our code. The final result was that users could talk at the same time.
+
+\section{Algorithms and Data Structures Used}
+
+\subsection{Algorithms}
+
+Our notable algorithms would be the algorithms that we have created to record, playback, send and receive voice.
+\\\\
+\textbf{Recording}
+\\
+For recording a voice note, we read from a \texttt{TargetDataLine} from the audio input into a temporary buffer. We then write that temporary buffer to a \texttt{ByteArrayOutputStream}, which is then available for playback.
+\\
+For transmitting voice, the bulk of the work is done by an almost identical algorithm. The difference is that an instructional header is added to the temporary buffer, and the buffer is then sent to all users that subscribe to the \texttt{MulicastSocket} that the current user is subscribed to.
+\\
+Every instance of recording is done in a seperate thread.
+\\\\
+\textbf{Playback}\\
+For our playback algorithm, we created \texttt{SourceDataLine} attached to the audio output. This algorithm then takes the given input stream and iterates through it, writing to the \texttt{SourceDataLine} until the input is exhausted. This is done in a seperate thread to a separate \texttt{SourceDataLine} for each instance.
+\\
+For voice notes, we send the entire \texttt{ByteArrayOutputStream} into the playback method, while for voice calls, we send each packet that we receive in separately and sequentially so that it appears as if there is non-stop transmission.
+
+\subsection{Data Structures}
+
+Java TCP sockets were used for the connection between the server and the client for text messages and alerts. This was implemented using Java's \texttt{Socket} and \texttt{ServerSocket} classes.
+\\\\
+To send voice notes and voice packets in calls, UDP sockets were used. Java's \texttt{MulticastSocket} was used for this, as it allowed for easy grouping of messages.
+\\\\
+The voice bytes are stored locally in \texttt{ByteArrayOutputStreams} and are converted to and from standard byte arrays with instructional headers for transmission.
+\\\\
+\texttt{javax.swing} was used for the GUI.
+
+\section{Compilation}
+
+From the commandline, go to the folder where the source code is located, as is
+indicated in the README. Compile all the files by using the \texttt{make} command.
+
+\section{Execution}
+
+To run a server, find the file called \texttt{run\textunderscore server.sh} (located in the same folder as the source code) and run it by typing \texttt{.\slash run\textunderscore server.sh}. This must be done before a client attempts to connect.
+
+To run a client, find the file called \texttt{run\textunderscore client.sh} (located in the same folder as the source code) and run it by typing \texttt{.\slash run\textunderscore client.sh}. Enter the host IP.
 
 \section{Conclusion}
 
-This was a fun project to work on, and both of us learnt a lot. The whole cycle, from
-building a basic implementation to testing the final product and all the steps in between,
-was a big learning curve. It is safe to say that we are both more confident in doing
-development in a team and know how to optimise the process.
+The aim of this project was to implement a VoIP system. The aim was successfully achieved as a basic VoIP system was implemented in Java.
+\\\\
+This project helped us to learn how the theoretical concepts work out in the practical side of things. We are both now confident in programming these sort of applications now, which fulfills the overall aim of the project.
 
 \end{document}

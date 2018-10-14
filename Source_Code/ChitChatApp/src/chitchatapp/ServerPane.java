@@ -1,14 +1,15 @@
-
 package chitchatapp;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Vector;
 
+/*Server and server gui*/
 public class ServerPane extends javax.swing.JFrame implements Runnable {
 
     private static ServerSocket server = null;
@@ -19,6 +20,7 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
     private static Boolean status = true;
     private static ArrayList<String> userNames = new ArrayList<String>();
     private static Vector<String> names = new Vector<String>();
+    private static DatagramSocket voiceSocket = null;
 
     /**
      * Creates new form ServerPane
@@ -46,6 +48,7 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        taClientAct.setEditable(false);
         taClientAct.setColumns(20);
         taClientAct.setRows(5);
         jScrollPane1.setViewportView(taClientAct);
@@ -62,12 +65,15 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -79,7 +85,7 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -104,26 +110,37 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
+     * Creates a new thread to run the server on
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         new Thread(new ServerPane()).start();
     }
 
+    /**
+     * Creates the gui and starts the server so clients can connect
+     */
     @Override
     public void run() {
         ServerPaneInit();
         serverOps();
     }
 
+    /**
+     * Creates a server socket for cleints to connect to. Creates and array of
+     * instances of each client that is connected. Makes sure the maximum
+     * allowed number of clients is not exceeded.
+     */
     public void serverOps() {
         int i;
         int port = 8000;
 
         // open ServerSocket
         try {
+            voiceSocket = new DatagramSocket(8001);
             server = new ServerSocket(port);
-            System.out.println("ChitChat Server Running!");
+            taClientAct.append("ChitChat Server Running!\n");
         } catch (IOException e) {
             System.err.println(e);
         }
@@ -132,14 +149,13 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
         while (status) {
             try {
                 client = server.accept();
-                System.out.println("Client attemptig to connect.");
+                taClientAct.append("Client attempting to connect.\n");
 
                 for (i = 0; i < clientLimit; i++) {
                     if (clientThreads[i] == null) {
-                        clientThreads[i] = new clientInstance(client, clientThreads, userNames);
+                        InetAddress inet = client.getInetAddress();
+                        clientThreads[i] = new clientInstance(client, voiceSocket, clientThreads, userNames, taClientAct, lstOnlineUsers, inet.getHostName());
                         clientThreads[i].start();
-//                        names = new Vector<>(Arrays.asList(clientThreads[i].getUserNames().split("##")));
-//                        lstOnlineUsers.setListData(names);
                         break;
                     }
                 }
@@ -148,15 +164,11 @@ public class ServerPane extends javax.swing.JFrame implements Runnable {
                 if (i == clientLimit) {
                     output = new PrintStream(client.getOutputStream());
                     output.println("ChitChat chatroom full, unlucky!");
-                    System.out.println("Client rejected due to client limit.");
+                    taClientAct.append("Client rejected due to client limit.\n");
                     output.close();
                     client.close();
                 }
-                
-                System.out.println(clientThreads[i].getUserNames());
-                
-                names = new Vector<>(Arrays.asList(clientThreads[i].getUserNames().split("##")));
-                lstOnlineUsers.setListData(names);
+
             } catch (IOException e) {
                 System.err.println(e);
             }

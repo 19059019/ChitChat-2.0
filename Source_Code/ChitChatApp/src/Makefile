@@ -6,6 +6,7 @@ JC = javac
 	$(JC) $(JFlags) $*.java
 
 CLASSES = \
+	chitchatapp/sendPacket.java\
 	chitchatapp/ClientPane.java\
 	chitchatapp/clientInstance.java\
 	chitchatapp/ServerPane.java
